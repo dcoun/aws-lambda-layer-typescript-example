@@ -1,0 +1,38 @@
+{
+  "name": "layer-test-api",
+  "version": "0.0.1",
+  "main": "index.js",
+  "scripts": {
+    "clear": "rm -rf .build .serverless .esbuild",
+    "prestart": "npm run clear && cd ../common-layer; npm run build;",
+    "start": "cp -r ../common-layer/nodejs/node_modules/* ./node_modules && NODE_ENV=local sls offline start --stage local",
+    "test": "NODE_ENV=test mocha -r ts-node/register -r tsconfig-paths/register \"test/**/*.ts\" -r dotenv/config --recursive --timeout 500000",
+    "build": "npm run clear && tsc",
+    "deploy:dev": "serverless deploy --stage dev",
+    "remove:dev": "serverless remove --stage dev"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@types/aws-lambda": "8.10.83",
+    "@types/chai": "4.3.10",
+    "@types/mocha": "10.0.4",
+    "@types/node": "14.17.3",
+    "chai": "4.3.10",
+    "esbuild": "0.19.7",
+    "mocha": "10.2.0",
+    "serverless": "2.55.0",
+    "serverless-dotenv-plugin": "3.9.0",
+    "serverless-esbuild": "1.49.0",
+    "serverless-latest-layer-version": "2.1.2",
+    "serverless-offline": "8.0.0",
+    "serverless-plugin-typescript": "2.1.5",
+    "source-map-support": "0.5.21",
+    "ts-node": "10.9.1",
+    "tsconfig-paths": "4.2.0",
+    "typescript": "4.3.5"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "description": ""
+}

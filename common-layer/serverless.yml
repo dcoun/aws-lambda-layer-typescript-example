@@ -1,0 +1,27 @@
+service: ${self:custom.PACKAGE_NAME}
+
+custom:
+  PACKAGE_NAME: ${file(./package.json):name}
+  PACKAGE_VERSION: ${file(./package.json):version}
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+  stage: ${opt:stage, 'local'}
+  region: 'ap-northeast-2'
+  deploymentBucket:
+    name: serverless-deploy-bucket
+  versionFunctions: false
+  environment:
+    STAGE: ${self:provider.stage}
+    PACKAGE_NAME: ${self:custom.PACKAGE_NAME}
+    PACKAGE_VERSION: ${self:custom.PACKAGE_VERSION}
+
+layers:
+  common-layer:
+    name: ${self:provider.stage}-${self:service}
+    compatibleRuntimes:
+      - 'nodejs14.x'
+    package:
+      artifact: common-layer.zip
+    retain: false

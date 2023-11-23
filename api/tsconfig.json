@@ -1,0 +1,53 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "target": "es6",
+    "outDir": ".build",
+    "strictNullChecks": false,
+    "sourceMap": true,
+    "noUnusedLocals": true,
+    "removeComments": true,
+    "noImplicitThis": false,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "allowJs": true,
+    "noImplicitAny": false,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "allowUmdGlobalAccess": true,
+    "esModuleInterop": true,
+    "typeRoots": [
+      "node_modules/@types"
+    ],
+    "lib": [
+      "es5",
+      "es6",
+      "es7",
+      "es2017",
+      "esnext"
+    ],
+    "baseUrl": ".",
+    "paths": {
+      "src/*": [
+        "src/*",
+        "./src/*"
+      ],
+      "common-layer/*": [
+        "../common-layer/src/*"
+      ],
+      "test/*": [
+        "test/*",
+        "./test/*"
+      ]
+    }
+  },
+  "include": [
+    "src",
+    "test",
+    "../common-layer"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}

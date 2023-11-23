@@ -1,0 +1,62 @@
+service: ${self:custom.PACKAGE_NAME}
+
+plugins:
+  - serverless-esbuild
+  - serverless-dotenv-plugin
+  - serverless-latest-layer-version
+  - serverless-offline
+
+useDotenv: true
+variablesResolutionMode: 20210326
+configValidationMode: error
+
+custom:
+  esbuild:
+    bundle: true
+    minify: false
+    external:
+      - '*'
+  dotenv:
+    exclude:
+      - MEMORY_SIZE
+      - LOG_RETENTION_IN_DAYS
+  serverless-offline:
+    httpPort: 4002
+    noPrependStageInUrl: true
+  PACKAGE_NAME: ${file(./package.json):name}
+  PACKAGE_VERSION: ${file(./package.json):version}
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+  stage: ${opt:stage, 'local'}
+  region: 'ap-northeast-2'
+  memorySize: ${env:MEMORY_SIZE}
+  logRetentionInDays: ${env:LOG_RETENTION_IN_DAYS}
+  deploymentBucket:
+    name: serverless-deploy-bucket
+  versionFunctions: false
+  environment:
+    STAGE: ${self:provider.stage}
+    PACKAGE_NAME: ${self:custom.PACKAGE_NAME}
+    PACKAGE_VERSION: ${self:custom.PACKAGE_VERSION}
+    DB_URI: ${env:DB_URI, 'api-env'}
+  layers:
+    - arn:aws:lambda:ap-northeast-2:{AWS:accountId}:layer:dev-common-layer:latest
+
+package:
+  patterns:
+    - src/**/*.{js}
+    - '!src/**/*.{md,ts,map}'
+    - '!test/**'
+    - '!package.json'
+    - '!node_modules/**'
+    - '!common-layer/**'
+
+functions:
+  test:
+    handler: src/index.getTest
+    events:
+      - http:
+          path: /test
+          method: GET
